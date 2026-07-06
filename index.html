@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrepRP - Prepare. Practice. Present. Succeed.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            overflow-x: hidden;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ========== ANIMATED HEADER ========== */
+        header {
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #2E7D32, #4CAF50, #66BB6A, #4CAF50, #2E7D32);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Particles Canvas */
+        #headerParticles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Floating Icons Background */
+        .floating-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .float-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 3rem;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease;
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .logo:hover {
+            animation-play-state: paused;
+            transform: scale(1.08);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInDown 1s ease-out 0.2s both;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+            animation: fadeInDown 1s ease-out 0.4s both;
+            letter-spacing: 2px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== ANIMATED FEATURES ========== */
+        .features {
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        /* Moving Dots Background */
+        #featuresDots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            color: #2E7D32;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #4CAF50, #81C784);
+            margin: 15px auto 0;
+            border-radius: 2px;
+            animation: expandLine 2s ease-out forwards;
+        }
+
+        @keyframes expandLine {
+            from { width: 0; }
+            to { width: 80px; }
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(76, 175, 80, 0.15);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            opacity: 0;
+            transform: translateY(40px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.06) 0%, transparent 60%);
+            animation: cardGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes cardGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 50px rgba(76, 175, 80, 0.15);
+            border-color: rgba(76, 175, 80, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            animation: iconBounce 3s ease-in-out infinite;
+        }
+
+        .feature-card:nth-child(2) .feature-icon {
+            animation-delay: 0.5s;
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            animation-delay: 1s;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2E7D32;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== ANIMATED HOW IT WORKS ========== */
+        .how-it-works {
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #e8f5e9, #f1f8e9, #e8f5e9);
+            background-size: 100% 200%;
+            animation: bgScroll 8s ease-in-out infinite;
+        }
+
+        @keyframes bgScroll {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 0% 100%; }
+        }
+
+        /* Wave Background */
+        .wave-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: -5px;
+            left: -5%;
+            width: 110%;
+            height: 100px;
+            background: rgba(76, 175, 80, 0.08);
+            border-radius: 50% 50% 0 0;
+            animation: waveMove 8s ease-in-out infinite;
+        }
+
+        .wave:nth-child(2) {
+            bottom: -20px;
+            left: -10%;
+            background: rgba(76, 175, 80, 0.05);
+            animation-delay: -3s;
+            animation-duration: 10s;
+        }
+
+        .wave:nth-child(3) {
+            bottom: -35px;
+            left: -15%;
+            background: rgba(46, 125, 50, 0.04);
+            animation-delay: -6s;
+            animation-duration: 12s;
+        }
+
+        @keyframes waveMove {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(2%) translateY(-5px); }
+            50% { transform: translateX(-2%) translateY(0); }
+            75% { transform: translateX(1%) translateY(5px); }
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 50px;
+            left: 100px;
+            right: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #4CAF50, #4CAF50, transparent);
+            z-index: 0;
+            background-size: 200% 100%;
+            animation: lineFlow 3s linear infinite;
+        }
+
+        @keyframes lineFlow {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .step.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .step-number {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: stepPulse 3s ease-in-out infinite;
+        }
+
+        .step:nth-child(2) .step-number { animation-delay: 1s; }
+        .step:nth-child(3) .step-number { animation-delay: 2s; }
+
+        @keyframes stepPulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3); }
+            50% { box-shadow: 0 8px 40px rgba(76, 175, 80, 0.5); }
+        }
+
+        .step-number:hover {
+            transform: scale(1.1);
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+            color: #2E7D32;
+            font-size: 1.3rem;
+        }
+
+        .step p {
+            color: #555;
+            max-width: 220px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ========== ANIMATED CTA ========== */
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1B5E20, #2E7D32, #388E3C, #2E7D32, #1B5E20);
+            background-size: 300% 300%;
+            animation: ctaGradient 10s ease infinite;
+        }
+
+        @keyframes ctaGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #ctaParticles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+            line-height: 1.7;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #2E7D32;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 18px 50px;
+            border-radius: 60px;
+            text-decoration: none;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 8px 50px rgba(255, 255, 255, 0.3); }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: #f1f8e9;
+            animation-play-state: paused;
+        }
+
+        .cta-button i {
+            margin-right: 8px;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: linear-gradient(180deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 50px 0 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #footerStars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        footer .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        footer h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: #81C784;
+        }
+
+        footer .team-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            background: rgba(76, 175, 80, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .team-member span {
+            color: #81C784;
+            font-weight: 600;
+        }
+
+        footer .copyright {
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        /* ========== MOBILE ========== */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .tagline { font-size: 1.1rem; letter-spacing: 1px; }
+            .logo { width: 150px; height: 150px; }
+            header { padding: 70px 0; }
+
+            .steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 50px;
+            }
+
+            .steps::before {
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                right: auto;
+                width: 3px;
+                height: auto;
+                transform: translateX(-50%);
+                background: linear-gradient(180deg, transparent, #4CAF50, #4CAF50, transparent);
+                background-size: 100% 200%;
+                animation: lineFlowV 3s linear infinite;
+            }
+
+            @keyframes lineFlowV {
+                0% { background-position: 0 -200%; }
+                100% { background-position: 0 200%; }
+            }
+
+            .cta h2 { font-size: 1.8rem; }
+            .cta p { font-size: 1rem; }
+            .cta-button { font-size: 1rem; padding: 15px 35px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header>
+        <canvas id="headerParticles"></canvas>
+        <div class="floating-icons" id="floatingIcons"></div>
+        <div class="container">
+            <div class="logo-container">
+                <img src="https://z-cdn-media.chatglm.cn/files/10141eef-a5a5-4aab-8f48-6d8212a8e58f.png?auth_key=1883307382-4cad12699edf4445a7bc728e4167ef59-0-291198ef7898fdd12965d40a5403cdf9" alt="PrepRP Logo" class="logo">
+            </div>
+            <h1>PrepRP</h1>
+            <p class="tagline">Prepare. Practice. Present. Succeed.</p>
+        </div>
+    </header>
+
+    <!-- ========== FEATURES ========== -->
+    <section class="features">
+        <canvas id="featuresDots"></canvas>
+        <div class="container">
+            <h2 class="section-title">What PrepRP Can Do For You</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Resume Guidance</h3>
+                    <p>Get personalized feedback on your resume to highlight your skills and experiences effectively for potential employers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Mock Interviews</h3>
+                    <p>Practice your interview skills with our AI-powered chatbot that simulates real interview questions and provides instant feedback.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Career Advice</h3>
+                    <p>Receive tailored career guidance based on your specific interests, skills, and the job requirements you're targeting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <section class="how-it-works">
+        <div class="wave-bg">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Start the Bot</h3>
+                    <p>Click the link below to start PrepRP on Telegram</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Choose a Feature</h3>
+                    <p>Select whether you want resume help, interview practice, or career advice</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Get Personalized Help</h3>
+                    <p>Receive instant feedback and guidance tailored to your specific needs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="cta">
+        <canvas id="ctaParticles"></canvas>
+        <div class="container">
+            <h2>Ready to Prepare for Your Future?</h2>
+            <p>Start using PrepRP today to boost your confidence and increase your chances of landing your dream internship.</p>
+            <a href="https://t.me/PrepRP_bot" target="_blank" class="cta-button">
+                <i class="fab fa-telegram-plane"></i> Try PrepRP Now
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <canvas id="footerStars"></canvas>
+        <div class="container">
+            <h3>PrepRP</h3>
+            <p class="team-label">Team GODOFANKAT</p>
+            <div class="team-members">
+                <div class="team-member"><span>Jasper Tham</span> · Solution Lead</div>
+                <div class="team-member"><span>Muhammad Irfaan</span> · Media Lead</div>
+                <div class="team-member"><span>Lewin</span> · QA/Testing Lead</div>
+                <div class="team-member"><span>Julian Seah</span> · Data Lead</div>
+                <div class="team-member"><span>Tyra Ang</span> · Comms Lead</div>
+            </div>
+            <p class="copyright">© 2026 PrepRP | Built with AI for RP Students</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== HEADER PARTICLES ==========
+        (function () {
+            const canvas = document.getElementById('headerParticles');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let w, h;
+
+            function resize() {
+                w = canvas.width = canvas.parentElement.offsetWidth;
+                h = canvas.height = canvas.parentElement.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.r = Math.random() * 3 + 1;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.alpha = Math.random() * 0.3 + 0.1;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update(); p.draw(); });
+
+                // Draw connections
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(255,255,255,${0.06 * (1 - dist / 120)})`;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ========== FLOATING ICONS ==========
+        (function () {
+            const container = document.getElementById('floatingIcons');
+            const icons = ['fa-file-alt', 'fa-comments', 'fa-briefcase', 'fa-graduation-cap', 'fa-user-tie', 'fa-chart-line', 'fa-handshake', 'fa-clipboard-check'];
+
+            function spawnIcon() {
+                const el = document.createElement('i');
+                el.classList.add('fas', 'float-icon', icons[Math.floor(Math.random() * icons.length)]);
+                el.style.left = Math.random() * 100 + '%';
+                el.style.fontSize = (Math.random() * 2 + 2) + 'rem';
+                const duration = Math.random() * 15 + 12;
+                el.style.animationDuration = duration + 's';
+                el.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(el);
+                setTimeout(() => el.remove(), (duration + 3) * 1000);
+            }
+
+            for (let i = 0; i < 10; i++) setTimeout(spawnIcon, i * 800);
+            setInterval(spawnIcon, 2000);
+        })();
+
+        // ========== FEATURES DOTS ==========
+        (function () {
+            const canvas = document.getElementById('featuresDots');
+            const ctx = canvas.getContext('2d');
+            let dots = [];
+            let w, h;
+
+            function resize() {
+                w = canvas.width = canvas.parentElement.offsetWidth;
+                h = canvas.height = canvas.parentElement.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            class Dot {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.r = Math.random() * 2 + 0.5;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.alpha = Math.random() * 0.15 + 0.05;
+                    this.color = Math.random() > 0.5 ? '76,175,80' : '129,199,132';
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 40; i++) dots.push(new Dot());
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                dots.forEach(d => { d.update(); d.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ========== CTA PARTICLES ==========
+        (function () {
+            const canvas = document.getElementById('ctaParticles');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let w, h;
+
+            function resize() {
+                w = canvas.width = canvas.parentElement.offsetWidth;
+                h = canvas.height = canvas.parentElement.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            class Sparkle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = h + 10;
+                    this.r = Math.random() * 2.5 + 0.5;
+                    this.vy = -(Math.random() * 1.5 + 0.5);
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.alpha = Math.random() * 0.5 + 0.2;
+                    this.fade = Math.random() * 0.003 + 0.001;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.alpha -= this.fade;
+                    if (this.alpha <= 0 || this.y < -10) this.reset();
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 50; i++) {
+                const s = new Sparkle();
+                s.y = Math.random() * h;
+                particles.push(s);
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ========== FOOTER STARS ==========
+        (function () {
+            const canvas = document.getElementById('footerStars');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let w, h;
+
+            function resize() {
+                w = canvas.width = canvas.parentElement.offsetWidth;
+                h = canvas.height = canvas.parentElement.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            class Star {
+                constructor() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.r = Math.random() * 1.5 + 0.3;
+                    this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+                    this.phase = Math.random() * Math.PI * 2;
+                }
+                draw(time) {
+                    const alpha = 0.3 + Math.sin(time * this.twinkleSpeed + this.phase) * 0.3;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 80; i++) stars.push(new Star());
+
+            function animate(time) {
+                ctx.clearRect(0, 0, w, h);
+                stars.forEach(s => s.draw(time));
+                requestAnimationFrame(animate);
+            }
+            animate(0);
+        })();
+
+        // ========== SCROLL REVEAL ==========
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.feature-card, .step').forEach((el, i) => {
+            el.style.transitionDelay = `${i * 0.2}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
