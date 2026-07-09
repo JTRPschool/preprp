@@ -1,947 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrepRP - Prepare. Practice. Present. Succeed.</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            color: #333;
-            overflow-x: hidden;
-            background: #f8f9fa;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* ========== ANIMATED HEADER ========== */
-        header {
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #2E7D32, #4CAF50, #66BB6A, #4CAF50, #2E7D32);
-            background-size: 400% 400%;
-            animation: gradientShift 12s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Floating Particles Canvas */
-        #headerParticles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        /* Floating Icons Background */
-        .floating-icons {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .float-icon {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.08);
-            font-size: 3rem;
-            animation: floatUp linear infinite;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(110vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-10vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .logo-container {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 30px;
-            animation: fadeInDown 1s ease-out;
-        }
-
-        .logo {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s ease;
-            animation: logoFloat 6s ease-in-out infinite;
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .logo:hover {
-            animation-play-state: paused;
-            transform: scale(1.08);
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-            animation: fadeInDown 1s ease-out 0.2s both;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .tagline {
-            font-size: 1.5rem;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-            animation: fadeInDown 1s ease-out 0.4s both;
-            letter-spacing: 2px;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ========== ANIMATED FEATURES ========== */
-        .features {
-            padding: 80px 0;
-            position: relative;
-            overflow: hidden;
-            background: #ffffff;
-        }
-
-        /* Moving Dots Background */
-        #featuresDots {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            font-size: 2.5rem;
-            color: #2E7D32;
-            position: relative;
-            z-index: 2;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #4CAF50, #81C784);
-            margin: 15px auto 0;
-            border-radius: 2px;
-            animation: expandLine 2s ease-out forwards;
-        }
-
-        @keyframes expandLine {
-            from { width: 0; }
-            to { width: 80px; }
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(76, 175, 80, 0.15);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            opacity: 0;
-            transform: translateY(40px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(76, 175, 80, 0.06) 0%, transparent 60%);
-            animation: cardGlow 6s ease-in-out infinite;
-        }
-
-        @keyframes cardGlow {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        .feature-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 50px rgba(76, 175, 80, 0.15);
-            border-color: rgba(76, 175, 80, 0.4);
-        }
-
-        .feature-icon {
-            font-size: 3.5rem;
-            color: #4CAF50;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-            animation: iconBounce 3s ease-in-out infinite;
-        }
-
-        .feature-card:nth-child(2) .feature-icon {
-            animation-delay: 0.5s;
-        }
-
-        .feature-card:nth-child(3) .feature-icon {
-            animation-delay: 1s;
-        }
-
-        @keyframes iconBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #2E7D32;
-            position: relative;
-            z-index: 1;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.7;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ========== ANIMATED HOW IT WORKS ========== */
-        .how-it-works {
-            padding: 80px 0;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(180deg, #e8f5e9, #f1f8e9, #e8f5e9);
-            background-size: 100% 200%;
-            animation: bgScroll 8s ease-in-out infinite;
-        }
-
-        @keyframes bgScroll {
-            0%, 100% { background-position: 0% 0%; }
-            50% { background-position: 0% 100%; }
-        }
-
-        /* Wave Background */
-        .wave-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .wave {
-            position: absolute;
-            bottom: -5px;
-            left: -5%;
-            width: 110%;
-            height: 100px;
-            background: rgba(76, 175, 80, 0.08);
-            border-radius: 50% 50% 0 0;
-            animation: waveMove 8s ease-in-out infinite;
-        }
-
-        .wave:nth-child(2) {
-            bottom: -20px;
-            left: -10%;
-            background: rgba(76, 175, 80, 0.05);
-            animation-delay: -3s;
-            animation-duration: 10s;
-        }
-
-        .wave:nth-child(3) {
-            bottom: -35px;
-            left: -15%;
-            background: rgba(46, 125, 50, 0.04);
-            animation-delay: -6s;
-            animation-duration: 12s;
-        }
-
-        @keyframes waveMove {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            25% { transform: translateX(2%) translateY(-5px); }
-            50% { transform: translateX(-2%) translateY(0); }
-            75% { transform: translateX(1%) translateY(5px); }
-        }
-
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            z-index: 2;
-        }
-
-        .steps::before {
-            content: '';
-            position: absolute;
-            top: 50px;
-            left: 100px;
-            right: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #4CAF50, #4CAF50, transparent);
-            z-index: 0;
-            background-size: 200% 100%;
-            animation: lineFlow 3s linear infinite;
-        }
-
-        @keyframes lineFlow {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .step {
-            flex: 1;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .step.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .step-number {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 0 auto 20px;
-            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: stepPulse 3s ease-in-out infinite;
-        }
-
-        .step:nth-child(2) .step-number { animation-delay: 1s; }
-        .step:nth-child(3) .step-number { animation-delay: 2s; }
-
-        @keyframes stepPulse {
-            0%, 100% { box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3); }
-            50% { box-shadow: 0 8px 40px rgba(76, 175, 80, 0.5); }
-        }
-
-        .step-number:hover {
-            transform: scale(1.1);
-        }
-
-        .step h3 {
-            margin-bottom: 10px;
-            color: #2E7D32;
-            font-size: 1.3rem;
-        }
-
-        .step p {
-            color: #555;
-            max-width: 220px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        /* ========== ANIMATED CTA ========== */
-        .cta {
-            padding: 100px 0;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #1B5E20, #2E7D32, #388E3C, #2E7D32, #1B5E20);
-            background-size: 300% 300%;
-            animation: ctaGradient 10s ease infinite;
-        }
-
-        @keyframes ctaGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #ctaParticles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            z-index: 1;
-            line-height: 1.7;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #2E7D32;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 18px 50px;
-            border-radius: 60px;
-            text-decoration: none;
-            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1;
-            animation: buttonPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); }
-            50% { box-shadow: 0 8px 50px rgba(255, 255, 255, 0.3); }
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            background: #f1f8e9;
-            animation-play-state: paused;
-        }
-
-        .cta-button i {
-            margin-right: 8px;
-        }
-
-        /* ========== FOOTER ========== */
-        footer {
-            background: linear-gradient(180deg, #1a1a2e, #16213e);
-            color: white;
-            padding: 50px 0 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #footerStars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        footer .container {
-            position: relative;
-            z-index: 1;
-        }
-
-        footer h3 {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-            color: #81C784;
-        }
-
-        footer .team-label {
-            color: #888;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-
-        .team-members {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .team-member {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-        .team-member:hover {
-            background: rgba(76, 175, 80, 0.2);
-            transform: translateY(-3px);
-        }
-
-        .team-member span {
-            color: #81C784;
-            font-weight: 600;
-        }
-
-        footer .copyright {
-            color: #555;
-            font-size: 0.85rem;
-        }
-
-        /* ========== MOBILE ========== */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .tagline { font-size: 1.1rem; letter-spacing: 1px; }
-            .logo { width: 150px; height: 150px; }
-            header { padding: 70px 0; }
-
-            .steps {
-                flex-direction: column;
-                align-items: center;
-                gap: 50px;
-            }
-
-            .steps::before {
-                top: 0;
-                bottom: 0;
-                left: 50%;
-                right: auto;
-                width: 3px;
-                height: auto;
-                transform: translateX(-50%);
-                background: linear-gradient(180deg, transparent, #4CAF50, #4CAF50, transparent);
-                background-size: 100% 200%;
-                animation: lineFlowV 3s linear infinite;
-            }
-
-            @keyframes lineFlowV {
-                0% { background-position: 0 -200%; }
-                100% { background-position: 0 200%; }
-            }
-
-            .cta h2 { font-size: 1.8rem; }
-            .cta p { font-size: 1rem; }
-            .cta-button { font-size: 1rem; padding: 15px 35px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PrepRP — Prepare. Practice. Present. Succeed.</title>
+<link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12181F;
+    --paper:#E9EDEF;
+    --paper-raised:#F7F9F9;
+    --navy:#14202B;
+    --navy-2:#1C2C3A;
+    --slate:#4A5A6C;
+    --amber:#43A047;
+    --amber-dim:#2E7D32;
+    --teal:#2E7DD1;
+    --line: rgba(18,24,31,0.12);
+    --line-dark: rgba(233,237,239,0.14);
+
+    --display: 'Fraunces', serif;
+    --body: 'IBM Plex Sans', -apple-system, sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+
+    color-scheme: light;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(233,237,239,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:1120px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--display); font-weight:700; font-size:20px; letter-spacing:0.01em;
+  }
+  .brand-mark{
+    width:34px; height:34px; border-radius:50%;
+    flex-shrink:0;
+    object-fit:cover;
+  }
+  .nav-links{ display:flex; gap:32px; font-size:15px; }
+  .nav-links a{
+    color:var(--slate); position:relative; padding:4px 0;
+    transition:color 0.2s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{ color:var(--ink); }
+  .nav-cta{
+    background:var(--navy); color:var(--paper-raised);
+    padding:10px 18px; border-radius:100px; font-size:14px; font-weight:500;
+    border:1px solid var(--navy);
+    transition:background 0.2s ease, transform 0.2s ease;
+  }
+  .nav-cta:hover{ background:var(--navy-2); transform:translateY(-1px); }
+  .menu-toggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .menu-toggle svg{ stroke:var(--ink); }
+
+  @media (max-width: 760px){
+    .nav-links{
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--paper-raised);
+      flex-direction:column; gap:0;
+      border-bottom:1px solid var(--line);
+      max-height:0; overflow:hidden;
+      transition:max-height 0.3s ease;
+    }
+    .nav-links.open{ max-height:320px; }
+    .nav-links a{ padding:14px 28px; border-top:1px solid var(--line); }
+    .nav-cta{ display:none; }
+    .menu-toggle{ display:block; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:72px 0 96px; position:relative; overflow:hidden; isolation:isolate; }
+  .hero::before{
+    content:'';
+    position:absolute; inset:-25%;
+    background:linear-gradient(115deg,
+      rgba(59,130,246,0.32) 0%,
+      rgba(34,197,94,0.34) 22%,
+      rgba(233,237,239,0) 45%,
+      rgba(34,197,94,0.30) 68%,
+      rgba(59,130,246,0.34) 100%);
+    background-size:260% 260%;
+    animation:gradientShift 14s ease-in-out infinite;
+    z-index:-1;
+    pointer-events:none;
+  }
+  @keyframes gradientShift{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--teal); display:flex; align-items:center; gap:10px; margin-bottom:20px;
+  }
+  .eyebrow::before{ content:''; width:7px; height:7px; border-radius:50%; background:var(--amber); }
+  .hero h1{
+    font-family:var(--display); font-weight:600; font-size:clamp(34px, 5vw, 54px);
+    line-height:1.06; letter-spacing:-0.01em; margin:0 0 22px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--teal); }
+  .hero p{ font-size:17px; color:var(--slate); max-width:46ch; margin:0 0 32px; }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn-primary{
+    background:var(--amber); color:var(--ink); font-weight:600; font-size:15px;
+    padding:15px 28px; border-radius:100px; display:inline-flex; align-items:center; gap:8px;
+    transition:background 0.2s ease, transform 0.2s ease;
+  }
+  .btn-primary:hover{ background:var(--amber-dim); transform:translateY(-2px); }
+  .btn-ghost{
+    border:1px solid var(--line); color:var(--ink); font-weight:500; font-size:15px;
+    padding:15px 26px; border-radius:100px;
+    transition:border-color 0.2s ease, background 0.2s ease;
+  }
+  .btn-ghost:hover{ border-color:var(--ink); background:rgba(18,24,31,0.04); }
+
+  /* ---------- SIGNATURE: interview transcript card ---------- */
+  .transcript-card{
+    background:var(--navy); border-radius:18px; padding:22px;
+    box-shadow:0 24px 60px -20px rgba(18,24,31,0.35);
+    border:1px solid var(--navy-2);
+  }
+  .transcript-head{
+    display:flex; align-items:center; gap:8px; padding-bottom:14px; margin-bottom:16px;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .dot{ width:9px; height:9px; border-radius:50%; }
+  .dot.r{ background:#E1604B; } .dot.y{ background:var(--amber); } .dot.g{ background:var(--teal); }
+  .transcript-title{
+    font-family:var(--mono); font-size:12px; color:#8FA0AE; margin-left:8px; letter-spacing:0.03em;
+  }
+  .msg{ display:flex; margin-bottom:14px; opacity:0; transform:translateY(6px); animation:rise 0.5s ease forwards; }
+  .msg.bot{ justify-content:flex-start; }
+  .msg.user{ justify-content:flex-end; }
+  .bubble{
+    max-width:82%; padding:12px 15px; border-radius:14px; font-size:14.5px; line-height:1.45;
+  }
+  .msg.bot .bubble{ background:var(--navy-2); color:#E9EDEF; border-bottom-left-radius:4px; }
+  .msg.user .bubble{ background:var(--amber); color:var(--ink); border-bottom-right-radius:4px; font-weight:500; }
+  .feedback-tag{
+    font-family:var(--mono); font-size:11.5px; color:var(--amber); background:rgba(67,160,71,0.16);
+    padding:6px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;
+    margin-top:2px; opacity:0; animation:rise 0.5s ease forwards;
+  }
+  .typing{ display:inline-flex; gap:4px; padding:12px 15px; }
+  .typing span{ width:6px; height:6px; border-radius:50%; background:#8FA0AE; animation:blink 1.1s infinite ease-in-out; }
+  .typing span:nth-child(2){ animation-delay:0.15s; }
+  .typing span:nth-child(3){ animation-delay:0.3s; }
+  @keyframes blink{ 0%,80%,100%{ opacity:0.25; } 40%{ opacity:1; } }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .next-q{
+    margin-top:16px; width:100%; text-align:center;
+    background:none; border:1px dashed var(--line-dark); color:#B9C6D0;
+    font-family:var(--mono); font-size:12.5px; letter-spacing:0.02em;
+    padding:11px; border-radius:10px; cursor:pointer;
+    transition:border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+  .next-q:hover, .next-q:focus-visible{ border-color:var(--amber); color:var(--amber); background:rgba(67,160,71,0.08); }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{
+    opacity:0; transform:translateY(18px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+  .feature, .member{ transition:transform 0.25s ease; }
+  .feature:hover, .member:hover{ transform:translateY(-3px); }
+
+  @media (max-width: 900px){
+    .hero-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding:88px 0; }
+  .section-head{ max-width:640px; margin-bottom:52px; }
+  .section-eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--amber-dim); margin-bottom:14px; display:block;
+  }
+  .section-head h2{
+    font-family:var(--display); font-weight:600; font-size:clamp(26px,3.4vw,36px);
+    margin:0 0 14px; letter-spacing:-0.01em;
+  }
+  .section-head p{ color:var(--slate); font-size:16px; margin:0; }
+
+  /* Features */
+  .features{ background:var(--paper-raised); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .feature-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  .feature{ background:var(--paper-raised); padding:34px 30px; }
+  .feature-icon{
+    width:42px; height:42px; border-radius:10px; background:var(--navy);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+  }
+  .feature-icon svg{ stroke:var(--amber); }
+  .feature h3{ font-family:var(--display); font-size:19px; font-weight:600; margin:0 0 10px; }
+  .feature p{ color:var(--slate); font-size:14.5px; margin:0; }
+  .cmd-badge{
+    display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:0.02em;
+    color:var(--amber-dim); background:rgba(67,160,71,0.10);
+    padding:4px 9px; border-radius:100px; margin-bottom:12px;
+  }
+
+  @media (max-width:820px){
+    .feature-grid{ grid-template-columns:1fr; }
+  }
+
+  /* How it works */
+  .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; counter-reset:step; }
+  .step{ position:relative; padding-top:8px; }
+  .step-num{
+    font-family:var(--mono); font-size:13px; color:var(--teal); display:block; margin-bottom:14px;
+  }
+  .step h3{ font-family:var(--display); font-size:18px; font-weight:600; margin:0 0 8px; }
+  .step p{ color:var(--slate); font-size:14.5px; margin:0; }
+  .step-line{
+    position:absolute; top:0; left:0; right:-30px; height:1px; background:var(--line);
+  }
+  @media (max-width:820px){ .steps{ grid-template-columns:1fr; gap:36px; } .step-line{ display:none; } }
+
+  /* Team */
+  .team-band{ background:var(--navy); color:var(--paper); }
+  .team-band .section-head p{ color:#96A5B2; }
+  .team-band .section-eyebrow{ color:var(--amber); }
+  .team-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:18px; }
+  .member{
+    background:var(--navy-2); border-radius:14px; padding:22px 18px;
+    border:1px solid var(--line-dark);
+  }
+  .member-avatar{
+    width:38px; height:38px; border-radius:50%; background:var(--amber);
+    color:var(--ink); font-family:var(--mono); font-weight:600; font-size:14px;
+    display:flex; align-items:center; justify-content:center; margin-bottom:14px;
+  }
+  .member h4{ font-size:15px; font-weight:600; margin:0 0 4px; font-family:var(--body); }
+  .member span{ font-size:12.5px; color:#8FA0AE; font-family:var(--mono); }
+  @media (max-width:900px){ .team-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:520px){ .team-grid{ grid-template-columns:1fr; } }
+
+  /* CTA band */
+  .cta-band{
+    text-align:center; padding:96px 0;
+    position:relative; overflow:hidden; isolation:isolate;
+  }
+  .cta-band::before{
+    content:'';
+    position:absolute; inset:-25%;
+    background:linear-gradient(255deg,
+      rgba(34,197,94,0.36) 0%,
+      rgba(59,130,246,0.30) 30%,
+      rgba(233,237,239,0) 50%,
+      rgba(59,130,246,0.30) 70%,
+      rgba(34,197,94,0.36) 100%);
+    background-size:260% 260%;
+    animation:gradientShift 17s ease-in-out infinite;
+    z-index:-1;
+    pointer-events:none;
+  }
+  .cta-band h2{
+    font-family:var(--display); font-weight:600; font-size:clamp(28px,4vw,42px);
+    margin:0 0 18px; letter-spacing:-0.01em;
+  }
+  .cta-band p{ color:var(--slate); margin:0 0 34px; }
+
+  footer{
+    border-top:1px solid var(--line); padding:34px 0; font-size:13.5px; color:var(--slate);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  footer .fmark{ font-family:var(--mono); }
+</style>
 </head>
 <body>
 
-    <!-- ========== HEADER ========== -->
-    <header>
-        <canvas id="headerParticles"></canvas>
-        <div class="floating-icons" id="floatingIcons"></div>
-        <div class="container">
-            <div class="logo-container">
-                <img src="https://z-cdn-media.chatglm.cn/files/10141eef-a5a5-4aab-8f48-6d8212a8e58f.png?auth_key=1883307382-4cad12699edf4445a7bc728e4167ef59-0-291198ef7898fdd12965d40a5403cdf9" alt="PrepRP Logo" class="logo">
-            </div>
-            <h1>PrepRP</h1>
-            <p class="tagline">Prepare. Practice. Present. Succeed.</p>
-        </div>
-    </header>
+<nav class="nav">
+  <div class="nav-row">
+    <a href="#top" class="brand">
+      <img src="assets/logo.jpg" alt="PrepRP logo" class="brand-mark">
+      PrepRP
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#top">Home</a>
+      <a href="#what">What it does</a>
+      <a href="#how">How it works</a>
+      <a href="#team">Team</a>
+    </div>
+    <a href="https://t.me/PrepRP_bot" class="nav-cta">Open the bot</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <svg width="24" height="24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </div>
+</nav>
 
-    <!-- ========== FEATURES ========== -->
-    <section class="features">
-        <canvas id="featuresDots"></canvas>
-        <div class="container">
-            <h2 class="section-title">What PrepRP Can Do For You</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <h3>Resume Guidance</h3>
-                    <p>Get personalized feedback on your resume to highlight your skills and experiences effectively for potential employers.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h3>Mock Interviews</h3>
-                    <p>Practice your interview skills with our AI-powered chatbot that simulates real interview questions and provides instant feedback.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <h3>Career Advice</h3>
-                    <p>Receive tailored career guidance based on your specific interests, skills, and the job requirements you're targeting.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Built for RP students · Live on Telegram</div>
+      <h1>Walk into your internship interview like you've<br><em>already done it.</em></h1>
+      <p>PrepRP is your AI practice partner for resumes, mock interviews, and career advice — coaching you turn by turn, exactly where your interviews will actually happen.</p>
+      <div class="hero-ctas">
+        <a href="https://t.me/PrepRP_bot" class="btn-primary">
+          Start practicing on Telegram →
+        </a>
+        <a href="#what" class="btn-ghost">See what it does</a>
+      </div>
+    </div>
 
-    <!-- ========== HOW IT WORKS ========== -->
-    <section class="how-it-works">
-        <div class="wave-bg">
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-        </div>
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Start the Bot</h3>
-                    <p>Click the link below to start PrepRP on Telegram</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Choose a Feature</h3>
-                    <p>Select whether you want resume help, interview practice, or career advice</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Get Personalized Help</h3>
-                    <p>Receive instant feedback and guidance tailored to your specific needs</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="transcript-card">
+      <div class="transcript-head">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="transcript-title">PrepRP · mock interview</span>
+      </div>
+      <div id="transcriptBody" aria-live="polite"></div>
+      <button class="next-q" id="nextQ" type="button">Try another question →</button>
+    </div>
+  </div>
+</header>
 
-    <!-- ========== CTA ========== -->
-    <section class="cta">
-        <canvas id="ctaParticles"></canvas>
-        <div class="container">
-            <h2>Ready to Prepare for Your Future?</h2>
-            <p>Start using PrepRP today to boost your confidence and increase your chances of landing your dream internship.</p>
-            <a href="https://t.me/PrepRP_bot" target="_blank" class="cta-button">
-                <i class="fab fa-telegram-plane"></i> Try PrepRP Now
-            </a>
-        </div>
-    </section>
+<section class="features" id="what">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">What PrepRP does</span>
+      <h2>Six ways to get interview-ready</h2>
+      <p>Every command grounded in real career guidance data — no fluff, no generic advice.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10c1-3 3-5 4-5s3 2 4 5"/><circle cx="10" cy="6" r="1"/><path d="M4 14c1.5-1 3.5-1.5 6-1.5s4.5.5 6 1.5"/></svg></div>
+        <span class="cmd-badge">/start</span>
+        <h3>Welcome experience</h3>
+        <p>Greets you, sends the PrepRP poster with a clickable website button, and lists every command so you know what to try first.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="12" height="16" rx="2"/><line x1="7" y1="6" x2="13" y2="6"/><line x1="7" y1="10" x2="13" y2="10"/><line x1="7" y1="14" x2="10" y2="14"/></svg></div>
+        <span class="cmd-badge">PDF upload</span>
+        <h3>Resume review</h3>
+        <p>Upload your resume as a PDF and get 3 specific strengths and 3 areas to improve — each with a concrete next step.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="3.4"/><circle cx="10" cy="10" r="0.6" fill="currentColor"/></svg></div>
+        <span class="cmd-badge">/match</span>
+        <h3>Resume-to-job matching</h3>
+        <p>Add your target job and get a match percentage, the skills you already have, and the top 3 missing skills to add.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h9l3 3v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M7 8h6M7 11h4"/></svg></div>
+        <span class="cmd-badge">/interview</span>
+        <h3>Mock interview mode</h3>
+        <p>A 5–10 question mock interview, one question at a time. Get scored out of 100 across four categories, plus example stronger answers.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l7-3.5L17 7l-7 3.5L3 7z"/><path d="M6 9v4c0 1 2 2 4 2s4-1 4-2V9"/></svg></div>
+        <span class="cmd-badge">auto-suggested</span>
+        <h3>Course recommendations</h3>
+        <p>After every review or match, get 1–2 real courses from Coursera, freeCodeCamp, or MySkillsFuture matched to your biggest skill gap — always real links.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h9l3 3v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M8 8a2 2 0 1 1 2.5 1.9c-.5.15-.9.6-.9 1.1v.3"/><circle cx="9.6" cy="13.2" r="0.6" fill="currentColor" stroke="none"/></svg></div>
+        <span class="cmd-badge">no command needed</span>
+        <h3>General career Q&A</h3>
+        <p>Ask free-text questions about internships, careers, and applications and get personalised guidance any time.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- ========== FOOTER ========== -->
-    <footer>
-        <canvas id="footerStars"></canvas>
-        <div class="container">
-            <h3>PrepRP</h3>
-            <p class="team-label">Team GODOFANKAT</p>
-            <div class="team-members">
-                <div class="team-member"><span>Jasper Tham</span> · Solution Lead</div>
-                <div class="team-member"><span>Muhammad Irfaan</span> · Media Lead</div>
-                <div class="team-member"><span>Lewin</span> · QA/Testing Lead</div>
-                <div class="team-member"><span>Julian Seah</span> · Data Lead</div>
-                <div class="team-member"><span>Tyra Ang</span> · Comms Lead</div>
-            </div>
-            <p class="copyright">© 2026 PrepRP | Built with AI for RP Students</p>
-        </div>
-    </footer>
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Getting started</span>
+      <h2>Three steps, no install</h2>
+      <p>PrepRP runs entirely on Telegram — nothing to download, no account to create.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-line"></div>
+        <span class="step-num">01</span>
+        <h3>Start the bot</h3>
+        <p>Tap through to PrepRP on Telegram — it opens straight into a chat, ready to go.</p>
+      </div>
+      <div class="step"><div class="step-line"></div>
+        <span class="step-num">02</span>
+        <h3>Choose a feature</h3>
+        <p>Pick resume help, a mock interview, or career advice depending on what you need right now.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Get personalised help</h3>
+        <p>Receive instant, specific feedback you can act on before your next real interview.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        // ========== HEADER PARTICLES ==========
-        (function () {
-            const canvas = document.getElementById('headerParticles');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            let w, h;
+<section class="team-band" id="team">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-eyebrow">Team GODOFANKAT</span>
+      <h2>Who built PrepRP</h2>
+      <p>Five roles, one product.</p>
+    </div>
+    <div class="team-grid">
+      <div class="member"><div class="member-avatar">JT</div><h4>Jasper Tham</h4><span>Solution Lead</span></div>
+      <div class="member"><div class="member-avatar">MI</div><h4>Muhammad Irfaan</h4><span>Media Lead</span></div>
+      <div class="member"><div class="member-avatar">L</div><h4>Lewin</h4><span>QA / Testing Lead</span></div>
+      <div class="member"><div class="member-avatar">JS</div><h4>Julian Seah</h4><span>Data Lead</span></div>
+      <div class="member"><div class="member-avatar">TA</div><h4>Tyra Ang</h4><span>Comms Lead</span></div>
+    </div>
+  </div>
+</section>
 
-            function resize() {
-                w = canvas.width = canvas.parentElement.offsetWidth;
-                h = canvas.height = canvas.parentElement.offsetHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Your next interview starts here.</h2>
+    <p>Free, instant, and built for RP students heading into internship season.</p>
+    <a href="https://t.me/PrepRP_bot" class="btn-primary">Try PrepRP now →</a>
+  </div>
+</section>
 
-            class Particle {
-                constructor() { this.reset(); }
-                reset() {
-                    this.x = Math.random() * w;
-                    this.y = Math.random() * h;
-                    this.r = Math.random() * 3 + 1;
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.vy = (Math.random() - 0.5) * 0.5;
-                    this.alpha = Math.random() * 0.3 + 0.1;
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
-                    ctx.fill();
-                }
-            }
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; width:100%;">
+    <span>© 2026 PrepRP · Built with AI for RP students</span>
+    <span class="fmark">Team GODOFANKAT</span>
+  </div>
+</footer>
 
-            for (let i = 0; i < 60; i++) particles.push(new Particle());
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
 
-            function animate() {
-                ctx.clearRect(0, 0, w, h);
-                particles.forEach(p => { p.update(); p.draw(); });
+  // Interactive mock-interview demo: cycles through real sample exchanges
+  const exchanges = [
+    {
+      q: "Tell me about a time you handled conflicting priorities.",
+      a: "I was juggling two group projects with the same deadline, so I ranked tasks by impact and told both teams early.",
+      tip: "✓ Good structure — add one measurable result next time"
+    },
+    {
+      q: "Why do you want to work in this industry?",
+      a: "I did a school project on it last year and realised I actually enjoy the problem-solving side, not just the subject.",
+      tip: "✓ Genuine — name one specific thing that hooked you"
+    },
+    {
+      q: "What's a weakness you're working on?",
+      a: "I used to leave presentation slides to the last minute, so now I draft an outline the day the task is assigned.",
+      tip: "✓ Shows growth — end on how it's helping you now"
+    },
+    {
+      q: "Describe a time you worked in a team with disagreement.",
+      a: "Two of us wanted different app designs, so we each pitched to the group and combined the best parts of both.",
+      tip: "✓ Balanced — mention the outcome for the user, not just the team"
+    }
+  ];
 
-                // Draw connections
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 120) {
-                            ctx.beginPath();
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.strokeStyle = `rgba(255,255,255,${0.06 * (1 - dist / 120)})`;
-                            ctx.stroke();
-                        }
-                    }
-                }
-                requestAnimationFrame(animate);
-            }
-            animate();
-        })();
+  const body = document.getElementById('transcriptBody');
+  const nextBtn = document.getElementById('nextQ');
+  let i = 0;
 
-        // ========== FLOATING ICONS ==========
-        (function () {
-            const container = document.getElementById('floatingIcons');
-            const icons = ['fa-file-alt', 'fa-comments', 'fa-briefcase', 'fa-graduation-cap', 'fa-user-tie', 'fa-chart-line', 'fa-handshake', 'fa-clipboard-check'];
+  function renderExchange(index){
+    const ex = exchanges[index];
+    body.innerHTML = `
+      <div class="msg bot" style="animation-delay:0s"><div class="bubble"></div></div>
+      <div class="msg user" style="animation-delay:.7s"><div class="bubble"></div></div>
+      <div class="feedback-tag" style="animation-delay:1.5s"></div>
+    `;
+    const botBubble = body.querySelector('.msg.bot .bubble');
+    const userMsg = body.querySelector('.msg.user');
+    const userBubble = userMsg.querySelector('.bubble');
+    const tag = body.querySelector('.feedback-tag');
 
-            function spawnIcon() {
-                const el = document.createElement('i');
-                el.classList.add('fas', 'float-icon', icons[Math.floor(Math.random() * icons.length)]);
-                el.style.left = Math.random() * 100 + '%';
-                el.style.fontSize = (Math.random() * 2 + 2) + 'rem';
-                const duration = Math.random() * 15 + 12;
-                el.style.animationDuration = duration + 's';
-                el.style.animationDelay = Math.random() * 2 + 's';
-                container.appendChild(el);
-                setTimeout(() => el.remove(), (duration + 3) * 1000);
-            }
+    botBubble.textContent = ex.q;
 
-            for (let i = 0; i < 10; i++) setTimeout(spawnIcon, i * 800);
-            setInterval(spawnIcon, 2000);
-        })();
+    setTimeout(() => { userBubble.textContent = ex.a; }, 700);
+    setTimeout(() => { tag.textContent = ex.tip; }, 1500);
+  }
 
-        // ========== FEATURES DOTS ==========
-        (function () {
-            const canvas = document.getElementById('featuresDots');
-            const ctx = canvas.getContext('2d');
-            let dots = [];
-            let w, h;
+  nextBtn.addEventListener('click', () => {
+    i = (i + 1) % exchanges.length;
+    renderExchange(i);
+  });
 
-            function resize() {
-                w = canvas.width = canvas.parentElement.offsetWidth;
-                h = canvas.height = canvas.parentElement.offsetHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
+  renderExchange(i);
 
-            class Dot {
-                constructor() { this.reset(); }
-                reset() {
-                    this.x = Math.random() * w;
-                    this.y = Math.random() * h;
-                    this.r = Math.random() * 2 + 0.5;
-                    this.vx = (Math.random() - 0.5) * 0.3;
-                    this.vy = (Math.random() - 0.5) * 0.3;
-                    this.alpha = Math.random() * 0.15 + 0.05;
-                    this.color = Math.random() > 0.5 ? '76,175,80' : '129,199,132';
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
-                    ctx.fill();
-                }
-            }
+  // Simple scroll-reveal: fade + rise as sections and cards enter view
+  const revealTargets = document.querySelectorAll('.section-head, .feature, .step, .member');
+  revealTargets.forEach((el, idx) => {
+    el.classList.add('reveal');
+    el.style.transitionDelay = (idx % 3) * 0.08 + 's';
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealTargets.forEach(el => observer.observe(el));
+</script>
 
-            for (let i = 0; i < 40; i++) dots.push(new Dot());
-
-            function animate() {
-                ctx.clearRect(0, 0, w, h);
-                dots.forEach(d => { d.update(); d.draw(); });
-                requestAnimationFrame(animate);
-            }
-            animate();
-        })();
-
-        // ========== CTA PARTICLES ==========
-        (function () {
-            const canvas = document.getElementById('ctaParticles');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            let w, h;
-
-            function resize() {
-                w = canvas.width = canvas.parentElement.offsetWidth;
-                h = canvas.height = canvas.parentElement.offsetHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            class Sparkle {
-                constructor() { this.reset(); }
-                reset() {
-                    this.x = Math.random() * w;
-                    this.y = h + 10;
-                    this.r = Math.random() * 2.5 + 0.5;
-                    this.vy = -(Math.random() * 1.5 + 0.5);
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.alpha = Math.random() * 0.5 + 0.2;
-                    this.fade = Math.random() * 0.003 + 0.001;
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    this.alpha -= this.fade;
-                    if (this.alpha <= 0 || this.y < -10) this.reset();
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
-                    ctx.fill();
-                }
-            }
-
-            for (let i = 0; i < 50; i++) {
-                const s = new Sparkle();
-                s.y = Math.random() * h;
-                particles.push(s);
-            }
-
-            function animate() {
-                ctx.clearRect(0, 0, w, h);
-                particles.forEach(p => { p.update(); p.draw(); });
-                requestAnimationFrame(animate);
-            }
-            animate();
-        })();
-
-        // ========== FOOTER STARS ==========
-        (function () {
-            const canvas = document.getElementById('footerStars');
-            const ctx = canvas.getContext('2d');
-            let stars = [];
-            let w, h;
-
-            function resize() {
-                w = canvas.width = canvas.parentElement.offsetWidth;
-                h = canvas.height = canvas.parentElement.offsetHeight;
-            }
-            resize();
-            window.addEventListener('resize', resize);
-
-            class Star {
-                constructor() {
-                    this.x = Math.random() * w;
-                    this.y = Math.random() * h;
-                    this.r = Math.random() * 1.5 + 0.3;
-                    this.twinkleSpeed = Math.random() * 0.02 + 0.005;
-                    this.phase = Math.random() * Math.PI * 2;
-                }
-                draw(time) {
-                    const alpha = 0.3 + Math.sin(time * this.twinkleSpeed + this.phase) * 0.3;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-                    ctx.fill();
-                }
-            }
-
-            for (let i = 0; i < 80; i++) stars.push(new Star());
-
-            function animate(time) {
-                ctx.clearRect(0, 0, w, h);
-                stars.forEach(s => s.draw(time));
-                requestAnimationFrame(animate);
-            }
-            animate(0);
-        })();
-
-        // ========== SCROLL REVEAL ==========
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.15 });
-
-        document.querySelectorAll('.feature-card, .step').forEach((el, i) => {
-            el.style.transitionDelay = `${i * 0.2}s`;
-            observer.observe(el);
-        });
-    </script>
 </body>
 </html>
